@@ -1,0 +1,3 @@
+_base: default.yaml
+datasets: [cicids2017]
+output: {dir: results/cicids2017}

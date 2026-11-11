@@ -1,0 +1,13 @@
+{
+  "_comment": "Real NOS3 CFS commands extracted from gsw/cosmos/config/targets/CFS/cmd_tlm/ on 2026-10-12. APID is the low 11 bits of CCSDS_STREAMID.",
+  "commands": [
+    {"name": "TO_NOOP",            "apid": 128, "fc": 0, "payload_hex": "", "klass": "benign"},
+    {"name": "TO_ENABLE_OUTPUT",   "apid": 128, "fc": 2, "payload_hex": "", "klass": "benign"},
+    {"name": "TO_DISABLE_OUTPUT",  "apid": 128, "fc": 3, "payload_hex": "", "klass": "benign"},
+    {"name": "TO_RESET",           "apid": 128, "fc": 1, "payload_hex": "", "klass": "sensitive"},
+    {"name": "CF_NOOP",            "apid": 179, "fc": 0, "payload_hex": "", "klass": "benign"},
+    {"name": "CF_RESET_COUNTERS",  "apid": 179, "fc": 1, "payload_hex": "00000000", "klass": "sensitive"},
+    {"name": "CF_FREEZE",          "apid": 179, "fc": 4, "payload_hex": "", "klass": "benign"},
+    {"name": "CF_THAW",            "apid": 179, "fc": 5, "payload_hex": "", "klass": "benign"}
+  ]
+}

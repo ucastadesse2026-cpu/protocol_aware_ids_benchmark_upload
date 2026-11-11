@@ -1,0 +1,5 @@
+Model,Strongest conformant attack (most frequent),G_protocol (worst case) pp
+cnn,pgd_ccsds,"-13.1 [-32.8, 6.6]"
+lstm,pgd_ccsds,"-7.2 [-21.4, 7.0]"
+random_forest,transfer_ccsds,"0.0 [0.0, 0.0]"
+transformer,pgd_ccsds,"-15.7 [-35.5, 4.1]"

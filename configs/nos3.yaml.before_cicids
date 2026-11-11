@@ -1,0 +1,92 @@
+# NOS3 real-data configuration. Uses the real CCSDS capture from ccsds_testbed,
+# with the profile derived from derive_profile.py.
+
+seeds: [1, 2, 3, 4, 5]
+datasets: [unsw_nb15]
+model_families: [cnn, lstm, transformer, random_forest]
+
+features:
+  view: extended
+  window_size: 32
+
+data:
+  terrestrial:
+    unsw_nb15:  {path: data/raw/unsw_nb15/UNSW_NB15_training-set.csv, source: real}
+    cicids2017: {path: data/raw/cicids2017, source: real, max_rows: 100000}
+    nsl_kdd:    {path: data/raw/nsl_kdd/KDDTrain+.txt, source: real, view: core}
+  satellite:
+    source: real
+    bin_path: data/raw/ccsds/nos3.bin
+    labels_path: data/raw/ccsds/nos3.labels.csv
+    stride: 32
+    wire_format: cfs
+    wire_overrides: {xor_init: 255}
+    label_rule: any
+
+profile:
+  version: 0
+  tm_apid_list: [128]
+  tc_apid_list: [128, 179, 384, 2047]
+  legal_opcodes:
+    128: [0, 1, 2, 3]
+    179: [0, 1, 4, 5]
+  max_user_data_tm: 72
+  max_user_data_tc: 320
+  seq_tolerance: 1020
+  max_gap_s: 60.0
+
+models:
+  cnn:         {filters: [32, 64, 128], dropout: 0.3, lr: 0.001, batch_size: 256, epochs: 5}
+  lstm:        {hidden: 128, layers: 2, dropout: 0.3, lr: 0.001, batch_size: 256, epochs: 5}
+  transformer: {d_model: 64, heads: 4, ff: 128, layers: 3, lr: 0.0005, batch_size: 256, epochs: 5}
+  random_forest: {n_estimators: 200, max_depth: null}
+  gan_augmented: {z_dim: 32, gan_iters: 2000}
+  numpy_mlp:   {hidden: [64, 32], lr: 0.005, epochs: 20}
+
+attacks:
+  surrogate: numpy_mlp
+  max_windows: 2000
+  standard:
+    names: [fgsm, pgd, autoattack]
+    eps: [0.01, 0.03, 0.05, 0.10]
+    primary_eps: 0.05
+    pgd_steps: 10
+  ccsds:
+    budget_packets: 8
+    max_pad: 64
+    gap_scale_min: 0.5
+    gap_scale_max: 2.0
+    steps: 15
+    greedy_iters: 30
+    greedy_candidates: 24
+
+defenses:
+  models: [cnn, lstm, transformer, random_forest]
+  eps: 0.05
+  at_steps: 5
+  at_mix: 0.5
+  paa: {lam: 0.25, adv_fraction: 0.5, max_attack_windows: 500}
+
+federated:
+  k: [5]
+  alpha: [0.5]
+  rounds: 10
+  local_epochs: 1
+  backbone: cnn
+  baseline_k: 5
+  baseline_alpha: 0.5
+  variants: [fedavg, federated_paa]
+
+gap:
+  standard_attack: pgd
+  ccsds_attack_preference: [pgd_ccsds, transfer_ccsds]
+
+preregistration:
+  rq1_min_families: 4
+  rq2_tau_threshold: 0.5
+  rq3_min_recovery: 0.5
+  rq3_max_time_multiple: 1.5
+  rq3_clean_acc_tol_pp: 1.0
+  rq4_tolerance_pp: 3.0
+
+output: {dir: results_final}

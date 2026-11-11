@@ -1,0 +1,18 @@
+# PILOT: real terrestrial datasets, SYNTHETIC satellite windows. Only terrestrial rows are meaningful; every table is
+# stamped SYNTHETIC-DATA. Purpose: check that everything runs and measure how long it takes. Not for the paper.
+_base: default.yaml
+seeds: [1]
+datasets: [unsw_nb15, cicids2017, nsl_kdd]
+model_families: [random_forest, cnn]
+data:
+  terrestrial:
+    cicids2017: {max_rows: 100000}
+  satellite: {source: synthetic, n_windows: 300}
+models:
+  cnn: {epochs: 5}
+attacks:
+  max_windows: 25
+  standard: {names: [fgsm, pgd], eps: [0.05], primary_eps: 0.05, pgd_steps: 5}
+defenses: {models: [cnn, random_forest]}
+federated: {k: [5], alpha: [0.5], rounds: 5, local_epochs: 1, backbone: numpy_mlp, variants: [fedavg]}
+output: {dir: results_pilot}

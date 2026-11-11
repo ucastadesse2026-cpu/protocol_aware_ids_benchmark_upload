@@ -1,0 +1,27 @@
+__pycache__/
+*.pyc
+results/cache/
+results_smoke/
+data/raw/*
+!data/raw/.gitkeep
+
+# Run artifacts (not code)
+logs/
+results/
+results_s[0-9]*/
+results_final/
+results_smoke/
+
+# Data files (already partially covered, ensure parent dirs too)
+data/raw/
+data/samples/*.bin
+data/samples/*.csv
+
+# Backups
+*.bak
+*.backup
+*.before_maxwindows
+
+# Pcaps and generated streams
+*.pcap
+*.pcapng

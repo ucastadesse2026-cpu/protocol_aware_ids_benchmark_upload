@@ -1,0 +1,9 @@
+{
+  "_comment": "TEMPLATE. Replace every TODO with real values from YOUR NOS3 build (COSMOS command definitions: message-ID/APID and function code, payload bytes). The generator refuses to run while TODOs remain. 'benign' = routine commands (e.g. NOOPs); 'sensitive' = legal but unusual commands that are HARMLESS in the simulator.",
+  "commands": [
+    {"name": "TODO_noop_app_a",  "apid": "TODO", "fc": "TODO", "payload_hex": "", "klass": "benign"},
+    {"name": "TODO_noop_app_b",  "apid": "TODO", "fc": "TODO", "payload_hex": "", "klass": "benign"},
+    {"name": "TODO_request_hk",  "apid": "TODO", "fc": "TODO", "payload_hex": "", "klass": "benign"},
+    {"name": "TODO_harmless_sensitive_cmd", "apid": "TODO", "fc": "TODO", "payload_hex": "", "klass": "sensitive"}
+  ]
+}

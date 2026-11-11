@@ -1,0 +1,3 @@
+_base: default.yaml
+datasets: [nsl_kdd]
+output: {dir: results/nsl_kdd}

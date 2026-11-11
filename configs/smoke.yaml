@@ -1,0 +1,29 @@
+# SMOKE configuration: SYNTHETIC data, NumPy/RF models only (no PyTorch/ART needed).
+# It verifies that the pipeline runs end to end. Numbers produced with it have NO scientific meaning.
+_base: default.yaml
+seeds: [1, 2]
+datasets: [unsw_nb15]
+model_families: [numpy_mlp, random_forest, fedavg]
+data:
+  terrestrial:
+    unsw_nb15: {source: synthetic, n_rows: 4000}
+  satellite: {source: synthetic, n_windows: 300}
+models:
+  random_forest: {n_estimators: 50}
+  numpy_mlp: {hidden: [32, 16], lr: 0.005, epochs: 15}
+attacks:
+  max_windows: 25
+  standard: {names: [fgsm, pgd], eps: [0.05], primary_eps: 0.05, pgd_steps: 5}
+  ccsds: {steps: 8, greedy_iters: 15, greedy_candidates: 12}
+defenses:
+  models: [numpy_mlp, random_forest]
+  at_steps: 3
+  paa: {lam: 0.25, adv_fraction: 0.5, max_attack_windows: 40}
+federated:
+  k: [5]
+  alpha: [0.1, 0.5]
+  rounds: 6
+  local_epochs: 2
+  backbone: numpy_mlp
+  variants: [fedavg, fedavg_at, federated_paa, federated_paa_clean_control]
+output: {dir: results_smoke}

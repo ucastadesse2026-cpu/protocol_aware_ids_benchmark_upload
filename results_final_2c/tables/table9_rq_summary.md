@@ -1,0 +1,9 @@
+### Table 9: research questions, pre-registered rules and measured outcomes
+
+| RQ | Rule | Observed | Outcome |
+|---|---|---|---|
+| RQ1 | G_protocol CI excludes 0 (same sign) for >= 4 families | 4 families: 0 with G_protocol CI>0, 0 with CI<0 | Inconclusive/mixed |
+| RQ2 | tau < 0.5 for a majority of models | 2/3 applicable models with tau < 0.5 | Supported (limited transfer) |
+| RQ3 | PAA recovers >= 50% of G_protocol at <= 1.5x training time and <= 1.0 pp clean loss | G_protocol <= 0 for all models: recovery fraction undefined | Inconclusive |
+| RQ3 (confound check, informational) | PAA minus clean-augmentation control in Acc S ccsds; interval covering 0 = no evidence that adversarial content adds anything beyond satellite-domain exposure | cnn: 0.0 pp [0.0, 0.0]; lstm: 0.0 pp [0.0, 0.0]; random_forest: 0.0 pp [0.0, 0.0]; transformer: 0.0 pp [0.0, 0.0] | informational (no pre-registered threshold) |
+| RQ4 | |G_fed − G_central| <= 3.0 pp for alpha >= 0.5 and larger at alpha = 0.1 | mean |G_fed − G_central|: 24.7 pp (alpha>=0.5), nan pp (alpha<0.5) | Inconclusive |

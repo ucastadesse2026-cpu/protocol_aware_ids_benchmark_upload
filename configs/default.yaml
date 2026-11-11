@@ -1,0 +1,86 @@
+# Default configuration for REAL experiments (needs the public datasets; see data/README.md).
+# Thresholds under `preregistration` should be fixed BEFORE the first run and committed to version control.
+seeds: [1, 2, 3, 4, 5]
+datasets: [unsw_nb15, cicids2017, nsl_kdd]
+model_families: [cnn, lstm, transformer, random_forest, fedavg, gan_augmented]
+
+features:
+  view: extended          # core | extended  (NSL-KDD is forced to core in its dataset entry)
+  window_size: 32         # packets per satellite window
+
+data:
+  terrestrial:
+    unsw_nb15:  {path: data/raw/unsw_nb15/UNSW_NB15_training-set.csv, source: real}
+    cicids2017: {path: data/raw/cicids2017, source: real, max_rows: 500000}
+    nsl_kdd:    {path: data/raw/nsl_kdd/KDDTrain+.txt, source: real, view: core}
+  satellite:
+    source: real          # real | synthetic (synthetic is for smoke tests ONLY)
+    bin_path: data/raw/ccsds/capture.bin
+    labels_path: data/raw/ccsds/capture.labels.csv   # columns: packet_index,label,attack_type
+    stride: 32
+
+profile:                  # MISSION PROFILE for C1-C8; replace with the real mission's allocations
+  version: 0
+  tm_apids: [256, 271]
+  tc_apids: [512, 527]
+  default_opcodes: [1, 32]
+  max_user_data_tm: 1024
+  max_user_data_tc: 256
+  seq_tolerance: 0
+  max_gap_s: 60.0
+
+models:                   # initial hyperparameters (Table 2); tune on validation data only
+  cnn:         {filters: [32, 64, 128], dropout: 0.3, lr: 0.001, batch_size: 256, epochs: 50}
+  lstm:        {hidden: 128, layers: 2, dropout: 0.3, lr: 0.001, batch_size: 256, epochs: 50}
+  transformer: {d_model: 64, heads: 4, ff: 128, layers: 3, lr: 0.0005, batch_size: 256, epochs: 50}
+  random_forest: {n_estimators: 200, max_depth: null}
+  gan_augmented: {z_dim: 32, gan_iters: 2000}
+  numpy_mlp:   {hidden: [64, 32], lr: 0.005, epochs: 20}
+
+attacks:
+  surrogate: numpy_mlp    # differentiable surrogate used for transfer attacks (e.g. against Random Forest)
+  max_windows: 300        # attack-class satellite windows attacked per model/seed
+  standard:
+    names: [fgsm, pgd, autoattack]
+    eps: [0.01, 0.03, 0.05, 0.10]
+    primary_eps: 0.05
+    pgd_steps: 10
+  ccsds:
+    budget_packets: 8
+    max_pad: 64
+    gap_scale_min: 0.5
+    gap_scale_max: 2.0
+    steps: 15
+    greedy_iters: 30
+    greedy_candidates: 24
+
+defenses:
+  models: [cnn, lstm, transformer, random_forest]
+  eps: 0.05
+  at_steps: 5
+  at_mix: 0.5
+  paa: {lam: 0.25, adv_fraction: 0.5, max_attack_windows: 500}
+
+federated:
+  k: [5, 10]
+  alpha: [0.1, 0.5, 1.0]
+  rounds: 50
+  local_epochs: 2
+  backbone: cnn
+  baseline_k: 5           # configuration used for the 'fedavg' model family in the baseline table
+  baseline_alpha: 0.5
+  variants: [fedavg, fedavg_at, federated_paa, federated_paa_clean_control]
+
+gap:
+  standard_attack: pgd                               # attack used for G / G_domain / G_protocol
+  ccsds_attack_preference: [pgd_ccsds, transfer_ccsds]
+
+preregistration:          # decision rules for Table 9 -- FIX BEFORE RUNNING
+  rq1_min_families: 4          # families whose G_protocol CI must exclude 0 (same sign)
+  rq2_tau_threshold: 0.5       # tau < threshold => limited transfer
+  rq3_min_recovery: 0.5        # fraction of G_protocol recovered by PAA
+  rq3_max_time_multiple: 1.5   # training-time multiple vs undefended baseline
+  rq3_clean_acc_tol_pp: 1.0    # max clean-accuracy loss (percentage points)
+  rq4_tolerance_pp: 3.0        # |G_fed - G_central| tolerance for alpha >= 0.5
+
+output: {dir: results}

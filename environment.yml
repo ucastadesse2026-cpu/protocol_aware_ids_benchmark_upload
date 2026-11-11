@@ -1,0 +1,15 @@
+name: ids
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - pyyaml
+  - matplotlib
+  - pip
+  - pip:
+      - torch                              # on Windows the PyPI wheel is the CPU build
+      - adversarial-robustness-toolbox

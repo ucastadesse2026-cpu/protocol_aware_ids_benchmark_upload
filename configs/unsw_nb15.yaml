@@ -1,0 +1,3 @@
+_base: default.yaml
+datasets: [unsw_nb15]
+output: {dir: results/unsw_nb15}
