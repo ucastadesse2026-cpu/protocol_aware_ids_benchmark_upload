@@ -1,5 +1,0 @@
-Model,Strongest conformant attack (most frequent),G_protocol (worst case) pp
-cnn,pgd_ccsds,"-32.5 [-445.8, 380.7]"
-lstm,pgd_ccsds,"-1.5 [-20.6, 17.6]"
-random_forest,transfer_ccsds,"0.0 [0.0, 0.0]"
-transformer,pgd_ccsds,"-30.9 [-422.9, 361.2]"

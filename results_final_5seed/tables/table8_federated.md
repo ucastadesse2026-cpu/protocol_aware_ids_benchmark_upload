@@ -1,6 +1,0 @@
-### Table 8: federated results
-
-| Variant | K | alpha | Acc S clean % | Acc S ccsds % | G | G central | G fed − central | Comm MB/round |
-|---|---|---|---|---|---|---|---|---|
-| fedavg | 5 | 0.5 | 58.12 ± 21.88 | 58.04 ± 21.83 | 7.10 ± 38.88 | 12.92 ± 45.14 | -5.82 ± 18.56 | 1.252 |
-| federated_paa | 5 | 0.5 | 64.75 ± 18.17 | 63.62 ± 19.51 | 4.25 ± 27.89 | 12.92 ± 45.14 | -8.68 ± 46.67 | 1.252 |

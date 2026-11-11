@@ -19,6 +19,7 @@ ENV/
 # Results / run artifacts (not code)
 # ============================================================
 results/
+results_*/
 results_s[0-9]*/
 results_final/
 results_smoke/
