@@ -1,27 +1,56 @@
+# ============================================================
+# Python
+# ============================================================
 __pycache__/
 *.pyc
-results/cache/
-results_smoke/
-data/raw/*
-!data/raw/.gitkeep
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
 
-# Run artifacts (not code)
-logs/
+# ============================================================
+# Results / run artifacts (not code)
+# ============================================================
 results/
 results_s[0-9]*/
 results_final/
 results_smoke/
+logs/
 
-# Data files (already partially covered, ensure parent dirs too)
-data/raw/
+# ============================================================
+# Data
+# ============================================================
+data/raw/*
+!data/raw/.gitkeep
 data/samples/*.bin
 data/samples/*.csv
 
+# ============================================================
 # Backups
+# ============================================================
 *.bak
 *.backup
 *.before_maxwindows
 
+# ============================================================
 # Pcaps and generated streams
+# ============================================================
 *.pcap
 *.pcapng
+
+# ============================================================
+# OS / editor junk
+# ============================================================
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
